@@ -4,6 +4,7 @@ const Http = new XMLHttpRequest();
 const url='http://localhost:9001/showAll';
 Http.open("GET", url);
 Http.onreadystatechange = function(e){
+	if(Http.readyState==4){
 	data=JSON.parse(Http.responseText);
 	data.forEach(function(item){
 		var movieTitle=document.createElement("div");
@@ -30,6 +31,7 @@ Http.onreadystatechange = function(e){
 		document.body.appendChild(poster_url);		
 		document.body.appendChild(watched);		
 	});
+}
 }
 Http.send();
 }
