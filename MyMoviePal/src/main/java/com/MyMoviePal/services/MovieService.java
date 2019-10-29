@@ -1,3 +1,4 @@
+package com.MyMoviePal.services;
 /*
  * package com.MyMoviePal.services; import java.util.ArrayList;
  * 

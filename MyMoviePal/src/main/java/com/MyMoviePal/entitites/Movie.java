@@ -6,10 +6,11 @@ import javax.persistence.Table;
 
 
 
+
 @Entity
 
 @Table(name="movies")
-public class Movies {
+public class Movie {
 	@Id
 	@GeneratedValue
 	private int id;
@@ -20,6 +21,27 @@ public class Movies {
 	private String cast;
 	private String poster_url ;
 	private String watched;
+	
+	
+	
+
+		public Movie setAttributes(Movie movie, String movie_title, int release_year, String plot, String genre, String cast, String poster_url, String watched) {
+
+		this.movie_title = movie_title;
+		this.release_year = release_year;
+		this.plot = plot;
+		this.genre = genre;
+		this.cast = cast;
+		this.poster_url = poster_url;
+		this.watched = watched;
+		return this;
+
+	}
+	
+	
+	
+	
+	
 	public int getId() {
 		return id;
 	}
