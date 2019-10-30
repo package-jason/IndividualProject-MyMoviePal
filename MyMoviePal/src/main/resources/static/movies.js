@@ -1,7 +1,7 @@
 function request(){
 console.log("helloo");
 const Http = new XMLHttpRequest();
-const url='http://localhost:9001/showAll';
+const url='http://localhost:9001/showAllMovies';
 Http.open("GET", url);
 Http.onreadystatechange = function(e){
 	if(Http.readyState==4){

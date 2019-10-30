@@ -11,4 +11,5 @@ import com.MyMoviePal.entitites.Movie;
 public interface MovieRepo extends JpaRepository<Movie,Integer>{
 	public ArrayList<Movie> findAll();
 
+
 }

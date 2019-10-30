@@ -6,34 +6,43 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MyMoviePal.entitites.Movie;
-import com.MyMoviePal.repos.MovieRepo;
+import com.MyMoviePal.services.MovieService;
 
 @RestController
+@CrossOrigin("*")
 public class MovieController {
 	@Autowired
-	private MovieRepo repo;
+	private MovieService service;
 
-	@CrossOrigin
+	
 	@GetMapping("/showAllMovies")
 	public ArrayList<Movie> showall() {
-		return repo.findAll();
+		return service.showall();
 	}
 	
 	@PostMapping("/addMovie")
 	public String SaveData(@RequestBody Movie Ref) {
-		repo.save(Ref);
+		service.SaveData(Ref);
 		return "movie saved";
 	}
 	
+	@PutMapping("/updateMovie")
+	public String updateMovie(@RequestBody Movie Ref) {
+		service.updateMovie(Ref);
+		return "updated movie";
+	}
+	
+
+	
 	@DeleteMapping("/deleteMovie/{id}")
 	public String deleteMovie(@PathVariable Integer id) {
-		repo.deleteById(id);
+		service.deleteMovie(id);
 		return "movie deleted";
 	}
 	

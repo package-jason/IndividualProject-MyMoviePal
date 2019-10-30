@@ -1,36 +1,52 @@
 package com.MyMoviePal.services;
-/*
- * package com.MyMoviePal.services; import java.util.ArrayList;
- * 
- * import java.util.List;
- * 
- * import org.springframework.beans.factory.annotation.Autowired; import
- * org.springframework.stereotype.Service;
- * 
- * import com.MyMoviePal.entities.domain.Trainer; import
- * com.qa.persistence.repository.TrainerRepository;
- * 
- * @Service public class TrainerService {
- * 
- * @Autowired private TrainerRepository trainerRepo;
- * 
- * public TrainerService() {
- * 
- * }
- * 
- * public List<Trainer> getAllTrainer() { if (trainerRepo.findAll().isEmpty()) {
- * setUpTrainers(); } return trainerRepo.findAll(); }
- * 
- * public Trainer addNewTrainer(Trainer trainer) { return
- * trainerRepo.save(trainer); }
- * 
- * public Trainer updateTrainer(Trainer trainer) { return
- * trainerRepo.save(trainer); }
- * 
- * public String deleteTrainer(Long id) { trainerRepo.deleteById(id); return
- * "Trainer succesfully deleted"; }
- * 
- * private void setUpTrainers() { Trainer john = new Trainer("John", "Gordon");
- * Trainer chris = new Trainer("Chris", "Perrins"); trainerRepo.save(john);
- * trainerRepo.save(chris); } }
- */
+
+import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import com.MyMoviePal.entitites.Movie;
+import com.MyMoviePal.repos.MovieRepo;
+
+@Service
+public class MovieService {
+	@Autowired
+	private MovieRepo repo;
+
+	
+	public ArrayList<Movie> showall() {
+		return repo.findAll();
+	}
+	
+	
+	public void SaveData(Movie Ref) {
+		repo.save(Ref);
+	}
+	
+
+	public void updateMovie(Movie Ref) {
+		repo.saveAndFlush(Ref);
+	}
+	
+	
+
+	public void deleteMovie( Integer id) {
+		repo.deleteById(id);
+	}
+	
+	/*@DeleteMapping("/deleteMovie/{movie_title}")
+	public String deleteRecord(@PathVariable String movie_title) {
+		service.deleteMovie(movie_title);
+		return "deleted movie";*/
+	}
+	
+	
+	
