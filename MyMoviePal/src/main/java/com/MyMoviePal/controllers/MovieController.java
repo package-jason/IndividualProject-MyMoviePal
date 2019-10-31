@@ -1,4 +1,5 @@
 package com.MyMoviePal.controllers;
+
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,37 +21,32 @@ public class MovieController {
 	@Autowired
 	private MovieService service;
 
-	
 	@GetMapping("/showAllMovies")
 	public ArrayList<Movie> showall() {
 		return service.showall();
 	}
-	
+
 	@PostMapping("/addMovie")
 	public String SaveData(@RequestBody Movie Ref) {
 		service.SaveData(Ref);
 		return "movie saved";
 	}
-	
+
 	@PutMapping("/updateMovie")
 	public String updateMovie(@RequestBody Movie Ref) {
 		service.updateMovie(Ref);
 		return "updated movie";
 	}
-	
 
-	
 	@DeleteMapping("/deleteMovie/{id}")
 	public String deleteMovie(@PathVariable Integer id) {
 		service.deleteMovie(id);
 		return "movie deleted";
 	}
-	
-	/*@DeleteMapping("/deleteMovie/{movie_title}")
-	public String deleteRecord(@PathVariable String movie_title) {
-		service.deleteMovie(movie_title);
-		return "deleted movie";*/
-	}
-	
-	
-	
+
+	/*
+	 * @DeleteMapping("/deleteMovie/{movie_title}") public String
+	 * deleteRecord(@PathVariable String movie_title) {
+	 * service.deleteMovie(movie_title); return "deleted movie";
+	 */
+}

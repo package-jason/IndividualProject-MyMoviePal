@@ -3,36 +3,82 @@
 <head>
 <meta charset="ISO-8859-1">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <script src="../static/movies.js"></script>
-  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="../static/movies.js"></script>
+
+
 <title>Insert title here</title>
 </head>
 <body onload="showMovies()">
 
-<div class="container" >
-<!-- I need to do use the getElementbyId to grab the table id, create a row per movie, td elements(table cells) 
+	<div class="container">
+		<!-- I need to do use the getElementbyId to grab the table id, create a row per movie, td elements(table cells) 
 for each column and then append these to the table () -->
-  <table id="moviesTable" class="table">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Release Year</th>
-        <th>Plot</th>
-        <th>Genre</th>
-        <th>Cast</th>
-        <th>Poster</th>
-        <th>Watched</th>
-      </tr>
-    </thead>
-    <tbody>
-      </tbody>
-  </table>
-</div>
+		<table id="moviesTable" class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Release Year</th>
+					<th>Plot</th>
+					<th>Genre</th>
+					<th>Cast</th>
+					<th>Poster</th>
+					<th>Watched</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Add a Movie
+</button>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Movie Title:<input type="text" id="movieTitle" name="movieTitle">
+        <br>
+		Release Year:<input type="text" id="releaseYear" name="releaseYear">
+		<br>
+		Plot:<input type="text" id="plot" name="plot">
+		<br>
+		Genre:<input type="text" id="genre" name="genre">
+		<br>
+		Cast:<input type="text" id="cast" name="cast">
+		<br>
+		Poster URL:<input type="text" id="poster_url" name="poster_url">
+		<br>
+		Watched:<input type="text" id="watched" name="watched">
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="submit" class="btn btn-primary" onclick="addMovie()">Save changes</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+	<!-- <form onsubmit="postMovie(event)">
+<input id="submitInput" type="submit" value="Add Movie">
+</form> -->
 
 </body>
 </html>
