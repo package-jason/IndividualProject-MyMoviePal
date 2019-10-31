@@ -1,7 +1,7 @@
 
 
 function showMovies(){
-console.log("helloo");
+//console.log("helloo");
 const Http = new XMLHttpRequest();
 // const url='http://34.89.125.196:9001/showAllMovies';
 const url='http://localhost:9001/showAllMovies';
@@ -22,8 +22,8 @@ Http.onreadystatechange = function(e){
 		var cast=document.createElement("td");
 		var poster_url=document.createElement("td");
 		var watched=document.createElement("td");
-		var edit=document.createElement("td");
-		var deleteMovie=document.createElement("td");
+//		var edit=document.createElement("td");
+//		var deleteMovie=document.createElement("td");
 	
 		
 		movieTitle.innerHTML=item.movie_title;
@@ -33,14 +33,14 @@ Http.onreadystatechange = function(e){
 		cast.innerHTML=item.cast;
 		poster_url.innerHTML=item.poster_url;
 		watched.innerHTML=item.watched;
-		var edi = document.createElement('input');
-		edi.type = 'button';
-		edi.value = "Edit";
-		edit.appendChild(edi);
-		var del = document.createElement('input');
-		del.type = 'button';
-		del.value = "Delete";
-		deleteMovie.appendChild(del);
+//		var edit = document.createElement('input');
+//		edit.type = 'button';
+//		edit.value = "Edit";
+//		edit.appendChild(edit);
+//		var del = document.createElement('input');
+//		del.type = 'button';
+//		del.value = "Delete";
+//		deleteMovie.appendChild(del);
 		
 		
 		// append the data into separate rows
@@ -51,8 +51,8 @@ Http.onreadystatechange = function(e){
 		row.appendChild(cast);		
 		row.appendChild(poster_url);		
 		row.appendChild(watched);
-		row.appendChild(edit);
-		row.appendChild(deleteMovie);
+//		row.appendChild(edit);
+//		row.appendChild(deleteMovie);
 		
 		movieTable.appendChild(row);
 	});
@@ -69,7 +69,6 @@ Http.send();
 
 
 function addMovie(){
-	console.log("Hey");
 	const Http = new XMLHttpRequest();
 	const url = 'http://localhost:9001/addMovie';
 	
@@ -86,13 +85,11 @@ function addMovie(){
 		'watched':document.getElementById("watched").value	
 	}
 	
-	Http:onreadystatechange = function(event){
-		console.log("Hey");
-		if(Http.readState == 4){
+	Http.onreadystatechange = function(event){
+		if(Http.readyState == 4){
 			showMovies();
 		}
 	}
-		
 		Http.send(JSON.stringify(body));
 		location.reload();
 		return false;
