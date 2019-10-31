@@ -18,7 +18,7 @@ public class Movie {
 	private String genre;
 	private String cast;
 	private String poster_url;
-	private String watched;
+	private boolean watched;
 
 	public int getId() {
 		return id;
@@ -76,11 +76,13 @@ public class Movie {
 		this.poster_url = poster_url;
 	}
 
-	public String getWatched() {
+	public boolean isWatched() {
 		return watched;
 	}
 
-	public void setWatched(String watched) {
+	public void setWatched(boolean watched) {
 		this.watched = watched;
 	}
+
+
 }

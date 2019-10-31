@@ -20,12 +20,20 @@ public class MovieService {
 	
 	
 	public void SaveData(Movie Ref) {
+		Ref.setWatched(false);
 		repo.save(Ref);
 	}
 	
 
 	public void updateMovie(Movie Ref) {
-		repo.saveAndFlush(Ref);
+		Movie foundMovie = repo.getOne(Ref.getId());
+		foundMovie.setMovie_title(Ref.getMovie_title());
+		foundMovie.setPlot(Ref.getPlot());
+		foundMovie.setGenre(Ref.getGenre());
+		foundMovie.setRelease_year(Ref.getRelease_year());
+		foundMovie.setCast(Ref.getCast());
+		foundMovie.setPoster_url(Ref.getPoster_url());
+		repo.flush();
 	}
 	
 	

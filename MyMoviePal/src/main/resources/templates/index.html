@@ -1,88 +1,94 @@
-
 <html>
+
 <head>
-<meta charset="ISO-8859-1">
+  <meta charset="ISO-8859-1">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<script src="../static/movies.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
-<title>Insert title here</title>
+  <script src="../static/movies.js"></script>
+
+
+  <title>Insert title here</title>
 </head>
+
 <body onload="showMovies()">
 
-	<div class="container">
-		<!-- I need to do use the getElementbyId to grab the table id, create a row per movie, td elements(table cells) 
-for each column and then append these to the table () -->
-		<table id="moviesTable" class="table">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Release Year</th>
-					<th>Plot</th>
-					<th>Genre</th>
-					<th>Cast</th>
-					<th>Poster</th>
-					<th>Watched</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-	</div>
-	
-	<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Add a Movie
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Add a Movie
+  </button>
+
+  <!-- Card Container -->
+  <div class="container">
+    <div class="row justify-content-center" id="card-holder"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Movie</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <form onsubmit="return addMovie(this)">
+          <div class="modal-body">
+            <input class="w-100" type="text" placeholder="Enter Movie Title" name="movie_title">
+            <input class="w-100" type="number" placeholder="Enter Release Year" name="release_year" min="1888" max="2019">
+            <textarea class="w-100" placeholder="Enter Plot" name="plot"></textarea>
+            <input class="w-100" type="text" placeholder="Enter Genres, comma separated" name="genre">
+            <input class="w-100" type="text" placeholder="Enter cast, comma separated" name="cast">
+            <input class="w-100" type="text" placeholder="Enter Image url" name="poster_url">
+          </div>
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-primary">
+          </div>
+        </form>
       </div>
-      <div class="modal-body">
-        Movie Title:<input type="text" id="movieTitle" name="movieTitle">
-        <br>
-		Release Year:<input type="text" id="releaseYear" name="releaseYear">
-		<br>
-		Plot:<input type="text" id="plot" name="plot">
-		<br>
-		Genre:<input type="text" id="genre" name="genre">
-		<br>
-		Cast:<input type="text" id="cast" name="cast">
-		<br>
-		Poster URL:<input type="text" id="poster_url" name="poster_url">
-		<br>
-		Watched:<input type="text" id="watched" name="watched">
-		
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="submit" class="btn btn-primary" onclick="addMovie()">Save changes</button>
-      </div>
-      
     </div>
   </div>
-</div>
-	<!-- <form onsubmit="postMovie(event)">
-<input id="submitInput" type="submit" value="Add Movie">
-</form> -->
 
+  <!-- Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Movie</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <form onsubmit="return editMovie(this)">
+            <div class="modal-body">
+              <input class="w-100" type="text" placeholder="Enter Movie Title" id="movie_title" name="movie_title">
+              <input class="w-100" type="number" placeholder="Enter Release Year" id="release_year" name="release_year" min="1888" max="2019">
+              <textarea class="w-100" placeholder="Enter Plot" id="plot" name="plot"></textarea>
+              <input class="w-100" type="text" placeholder="Enter Genres, comma separated" id="genre" name="genre">
+              <input class="w-100" type="text" placeholder="Enter cast, comma separated" id="cast" name="cast">
+              <input class="w-100" type="text" placeholder="Enter Image url" id="poster_url" name="poster_url">
+            </div>
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-primary">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>
-
-
-
-
