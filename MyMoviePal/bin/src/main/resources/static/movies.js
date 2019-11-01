@@ -34,9 +34,7 @@ function render(data) {
 		posterColumn.className = "col";
 
 		let image = document.createElement("img");
-		image.className = "card-img-left w-100";
-		
-		
+		image.className = "w-100";
 		image.setAttribute("src", cardInfo.poster_url);
 
 		posterColumn.appendChild(image);
@@ -56,8 +54,31 @@ function render(data) {
 		titleColumn.appendChild(heading);
 		titleRow.appendChild(titleColumn);
 
-		// CAST ROW
-		
+		let genresRow = document.createElement("div");
+		genresRow.className = "row";
+		let genresColumn = document.createElement("div");
+		genresColumn.className="col";
+		let genres = cardInfo.genre.split(",");
+		for (let genre of genres) {
+			let para = document.createElement("p");
+			para.className = "m-0 genre";
+			para.innerText=genre;
+			genresColumn.appendChild(para);
+		}
+		genresRow.appendChild(genresColumn);
+
+
+		let plotRow = document.createElement("div");
+		plotRow.className = "row";
+		let plotCol = document.createElement("div");
+		plotCol.className = "col";
+
+		let plotPara = document.createElement("p");
+		plotPara.innerText= cardInfo.plot;
+
+		plotCol.appendChild(plotPara);
+		plotRow.appendChild(plotCol);
+
 		let castRow = document.createElement("div");
 		castRow.className = "row";
 
@@ -71,56 +92,8 @@ function render(data) {
 		castCol.appendChild(castPara);
 		castRow.appendChild(castCol);
 
-		
-
-		// GENRES ROW
-		
-
-		let genresRow = document.createElement("div");
-		genresRow.className = "row";
-		let genresColumn = document.createElement("div");
-		genresColumn.className="col";
-
-		// let genresPara = document.createElement("p");
-		// genresPara.className = "cast";
-		// genresPara.innerText = cardInfo.genre;
-
-		// genresColumn.appendChild(genresPara);
-		// genresRow.appendChild(genresColumn);
-	
-
-	
-		let genres = cardInfo.genre.split(",");
-		for (let genre of genres) {
-			let para = document.createElement("p");
-			para.className = "m-1 genre badge badge-dark";
-			para.innerText=genre;
-			genresColumn.appendChild(para);
-		}
-		genresRow.appendChild(genresColumn);
-
-		// PLOT ROW
-
-		let plotRow = document.createElement("div");
-		plotRow.className = "row";
-		let plotCol = document.createElement("div");
-		plotCol.className = "col";
-
-		let plotPara = document.createElement("p");
-		plotPara.innerText= cardInfo.plot;
-
-		plotCol.appendChild(plotPara);
-		plotRow.appendChild(plotCol);
-
-		
-		// EDIT ROW AND BUTTON
-
-
 		let buttonRow = document.createElement("div");
-		buttonRow.className ="row"
-		// buttonRow.style.position = "relative";
-		// buttonRow.style.top = "41px"
-
+		buttonRow.className ="row";
 		
 		let editColumn = document.createElement("div");
 		editColumn.className ="col-6";
@@ -132,14 +105,6 @@ function render(data) {
 		})
 		editColumn.appendChild(editButton);
 		buttonRow.appendChild(editColumn);
-
-
-		
-
-	//	<input id="toggle-one" checked type="checkbox">
-
-		// DELETE ROW AND BUTTON
-
 
 		let deleteColumn = document.createElement("div");
 		deleteColumn.className = "col-6";
@@ -215,7 +180,6 @@ function openEditModal(cardInfo) {
 	}
 
 	$('#editModal').modal('show');
-	
 }
 
 function editMovie(form) {
