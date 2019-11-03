@@ -100,3 +100,15 @@ input[type=checkbox] {
     background-color: #01D277;
   }
 
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 15px;
+  }
+  ::-webkit-scrollbar-track-piece  {
+  background-color: black ;
+  }
+  ::-webkit-scrollbar-thumb:vertical {
+  height: 30px;
+  background-color: #01D277;
+  }
