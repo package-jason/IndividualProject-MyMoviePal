@@ -1,244 +1,299 @@
-
+/**
+ * This function will get all the movies and push to render.
+ */
 function showMovies() {
 	// console.log("helloo");
 	const Http = new XMLHttpRequest();
 	// const url='http://34.89.125.196:9001/showAllMovies';
-	const url = 'http://'+location.hostname+':9001/showAllMovies';
+	const url = 'http://' + location.hostname + ':9001/showAllMovies';
 	Http.open("GET", url);
-	Http.onload = function(e) {
+	Http.onload = function (e) {
 		// console.log("status"+Http.readyState);
-			data = JSON.parse(Http.responseText); // Returns the body of the server's
-			console.log(data)
-			render(data);
-		}
+		data = JSON.parse(Http.responseText); // Returns the body of the server's
+		console.log(data);
+		render(data);
+	};
 	Http.send();
 }
 
+/**
+ * create the UI elements according to the given data set.
+ * @param data movie array
+ */
 function render(data) {
 
 	let container = document.getElementById("card-holder");
-	container.innerHTML="";
+	container.innerHTML = ""; // clear the current content.
 
 	for (let cardInfo of data) {
-		let card = document.createElement("div");
-		card.className = "card col-sm-10 col-md-5 col-lg-3 m-3";
-		
-		let cardContainer = document.createElement("div");
-		cardContainer.className = "container";
-
-		// POSTER ROW
-		let posterRow = document.createElement("div");
-		posterRow.className="row";
-
-		let posterColumn = document.createElement("div");
-		posterColumn.className = "col";
-
-		let image = document.createElement("img");
-		image.className = "card-img-left w-100";
-		
-		
-		image.setAttribute("src", cardInfo.poster_url);
-
-		posterColumn.appendChild(image);
-
-		posterRow.appendChild(posterColumn);
-
-		// TITLE ROW
-		let titleRow = document.createElement("div");
-		titleRow.className = "row";
-		
-		let titleColumn = document.createElement("div");
-		titleColumn.className = "col";
-
-		let heading = document.createElement("h4");
-		heading.innerText = cardInfo.movie_title +" (" + cardInfo.release_year + ")";
-
-		titleColumn.appendChild(heading);
-		titleRow.appendChild(titleColumn);
-
-		// CAST ROW
-		
-		let castRow = document.createElement("div");
-		castRow.className = "row";
-
-		let castCol = document.createElement("div");
-		castCol.className = "col";
-
-		let castPara = document.createElement("p");
-		castPara.className = "cast";
-		castPara.innerText = cardInfo.cast;
-
-		castCol.appendChild(castPara);
-		castRow.appendChild(castCol);
-
-		
-
-		// GENRES ROW
-		
-
-		let genresRow = document.createElement("div");
-		genresRow.className = "row";
-		let genresColumn = document.createElement("div");
-		genresColumn.className="col";
-
-		// let genresPara = document.createElement("p");
-		// genresPara.className = "cast";
-		// genresPara.innerText = cardInfo.genre;
-
-		// genresColumn.appendChild(genresPara);
-		// genresRow.appendChild(genresColumn);
-	
-
-	
-		let genres = cardInfo.genre.split(",");
-		for (let genre of genres) {
-			let para = document.createElement("p");
-			para.className = "m-1 genre badge badge-dark";
-			para.innerText=genre;
-			genresColumn.appendChild(para);
+		function generateTags() {
+			let outputString = '';
+			let genres = cardInfo.genre.split(",");
+			for (let genre of genres) {
+				outputString += '<p class="m-1 genre badge badge-dark">' + genre + '</p>'
+			}
+			return outputString;
 		}
-		genresRow.appendChild(genresColumn);
 
-		// PLOT ROW
+		let contentTempalte = `
+			<div class="card">
+			  <div class="row" style="padding: 10px 10px 10px 0;">
+                <div class="col-sm-4">
+                  <img class="card-img-left w-100" src="${cardInfo.poster_url}" style="margin-top: 10%;margin-left: 10%;">
+                </div>
+                <div class="col-sm-8">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title">${cardInfo.movie_title}</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">${cardInfo.release_year}</h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <p>${cardInfo.plot}</p>
+                    </div>
+                  </div>
+    
+                  <div class="dropdown-divider"></div>
+                  <div class="row">
+                    <div class="col">
+                      ${generateTags()}
+                    </div>
+                  </div>
+    
+                  <div class="row">
+                    <div class="col">
+                      <p class="cast">${cardInfo.cast}</p>
+                    </div>
+                  </div>
+                  <div class="row" id="action-${cardInfo.id}">
+                </div>
+            </div>
+		</div>`;
 
-		let plotRow = document.createElement("div");
-		plotRow.className = "row";
-		let plotCol = document.createElement("div");
-		plotCol.className = "col";
+		// create main row for a card.
+		let mainRow = document.createElement('div');
+		mainRow.setAttribute('style', 'margin-bottom: 10px');
+		mainRow.className = 'col-sm-6';
+		mainRow.innerHTML = contentTempalte;
 
-		let plotPara = document.createElement("p");
-		plotPara.innerText= cardInfo.plot;
+		container.appendChild(mainRow);
 
-		plotCol.appendChild(plotPara);
-		plotRow.appendChild(plotCol);
+		// create action buttons and toggle.
+		let actionDiv = document.getElementById('action-' + cardInfo.id);
 
-		
-		// EDIT ROW AND BUTTON
+		let column1 = document.createElement('div');
+		column1.className = 'col-sm-8';
 
+		let watchedToggle = document.createElement('input');
+		watchedToggle.setAttribute('id', 'watch-toggle-' + cardInfo.id);
+		watchedToggle.setAttribute('type', 'checkbox');
+		if (cardInfo.watched) {
+			watchedToggle.setAttribute('checked', true);
+		}
+		watchedToggle.addEventListener('click', function () {
+			editWatchStatus(cardInfo);
+		});
+		let watchedLabel = document.createElement('label');
+		let textLabel = document.createElement('label');
+		textLabel.innerText = 'Watched:';
+		watchedLabel.innerHTML = '<i>    </i>';
+		textLabel.setAttribute('style', 'padding-right: 4%');
 
-		let buttonRow = document.createElement("div");
-		buttonRow.className ="row"
-		// buttonRow.style.position = "relative";
-		// buttonRow.style.top = "41px"
+		watchedLabel.setAttribute('for', 'watch-toggle-' + cardInfo.id);
+		watchedLabel.setAttribute('data-text-true', 'Yes');
+		watchedLabel.setAttribute('data-text-false', 'No');
 
-		
-		let editColumn = document.createElement("div");
-		editColumn.className ="col-6";
+		document.createElement('div');
+		column1.appendChild(textLabel);
+		column1.appendChild(watchedToggle);
+		column1.appendChild(watchedLabel);
+
+		actionDiv.appendChild(column1); // add toggle finish
+
+		let buttonsDiv = document.createElement('div');
+		buttonsDiv.className = 'row';
+
+		// edit button
 		let editButton = document.createElement("button");
-		editButton.innerText = "EDIT"
-		editButton.className = "btn btn-secondary w-100"
-		editColumn.addEventListener("click", function() {
+	//	editButton.innerHTML = '<i class="fas fa-edit"></i>';
+	//	editButton.className = "btn btn-secondary";
+		editButton.innerHTML = '<img src="edit.png" />';
+
+		editButton.addEventListener("click", function () {
 			openEditModal(cardInfo);
-		})
-		editColumn.appendChild(editButton);
-		buttonRow.appendChild(editColumn);
+		});
 
+		buttonsDiv.appendChild(editButton);
 
-		
-
-	//	<input id="toggle-one" checked type="checkbox">
-
-		// DELETE ROW AND BUTTON
-
-
-		let deleteColumn = document.createElement("div");
-		deleteColumn.className = "col-6";
-		let deleteButton = document.createElement("button");
-		deleteButton.innerText = "DELETE"
-		deleteButton.className = "btn btn-danger w-100";
-		deleteButton.addEventListener("click", function() {
+		// delete button
+		let removeButton = document.createElement("button");
+	//	removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+		removeButton.innerHTML = '<img src="delete.png" />';
+	//	removeButton.className = "btn btn-danger";
+		removeButton.setAttribute('style', 'margin-left: 5px');
+		removeButton.addEventListener("click", function () {
 			deleteMovieById(cardInfo.id);
-		})
-		deleteColumn.appendChild(deleteButton);
-		buttonRow.appendChild(deleteColumn);
-		
-		cardContainer.appendChild(posterRow);
-		cardContainer.appendChild(titleRow);
-		cardContainer.appendChild(genresRow);
-		cardContainer.appendChild(plotRow);
-		cardContainer.appendChild(castRow);
-		cardContainer.appendChild(buttonRow);
+		});
 
-		card.appendChild(cardContainer);
-
-		container.appendChild(card);
-
+		buttonsDiv.appendChild(removeButton);
+		actionDiv.appendChild(buttonsDiv);
 	}
 }
 
 function addMovie(form) {
 	let body = {};
-	for(let input of form) {
-		if(input.name) {
+	let errorArea = document.getElementById('add-form-errors');
+
+	for (let input of form) {
+		if (input.name) {
 			body[input.name] = input.value;
+		}
+	}
+
+	// validate the inputs.
+	const validationErrors = dataValidator(body);
+	if(validationErrors) {
+		console.log(validationErrors);
+		errorArea.innerHTML = `<div class="alert alert-danger" role="alert">
+              ${validationErrors}
+            </div>`;
+		return false;
+	} else {
+		errorArea.innerText = '';
+	}
+
+	for (let input of form) {
+		if (input.name) {
 			input.value = "";
 		}
 	}
 
-
 	const Http = new XMLHttpRequest();
-	const url = 'http://'+location.hostname+':9001/addMovie';
+	const url = 'http://' + location.hostname + ':9001/addMovie';
 
 	Http.open("POST", url);
 	Http.setRequestHeader("Content-Type", "application/json");
 
-	Http.onload = function(event) {
+	Http.onload = function (event) {
 		showMovies();
-	}
+	};
 	Http.send(JSON.stringify(body));
 
 	$('#addMovieModal').modal('hide');
 	return false;
 }
 
-function deleteMovieById(id){
-	const Http = new XMLHttpRequest();
-	const url = 'http://'+location.hostname+':9001/deleteMovie/'+id;
+function deleteMovieById(id) {
+	
+	if(confirm('Are you sure you want to delete this movie ?') ) {
 
-	Http.open("DELETE", url);
-	
-	Http.onload = function(event) {
-		showMovies();
+		const Http = new XMLHttpRequest();
+		const url = 'http://' + location.hostname + ':9001/deleteMovie/' + id;
+
+		Http.open("DELETE", url);
+
+		Http.onload = function (event) {
+			showMovies();
+		};
+		
+		Http.send();
 	}
-	
-	Http.send();
 }
 
-let selectedId;
+let selectedMovie;
 
 function openEditModal(cardInfo) {
-	selectedId = cardInfo.id;
-	for(let key in cardInfo){
-		if (key != "watched" && key != "id") {
-			document.getElementById(key).value = cardInfo[key];
+	selectedMovie = cardInfo;
+	for (let key in cardInfo) {
+		if (key !== "watched" && key !== "id") {
+			document.getElementById('edit-' + key).value = cardInfo[key];
 		}
 	}
 
 	$('#editModal').modal('show');
-	
+
 }
 
 function editMovie(form) {
 	let body = {};
-	for(let input of form) {
-		if(input.name) {
+	let errorArea = document.getElementById('edit-form-errors');
+
+	for (let input of form) {
+		if (input.name) {
 			body[input.name] = input.value;
-			input.value = "";
 		}
 	}
-	body.id = selectedId;
+
+	// validate inputs
+	const validationErrors = dataValidator(body);
+	if(validationErrors) {
+		console.log(validationErrors);
+		errorArea.innerHTML = `<div class="alert alert-danger" role="alert">
+              ${validationErrors}
+            </div>`;
+		return false;
+	} else {
+		errorArea.innerText = '';
+	}
+
+	body.id = selectedMovie.id;
+	body.watched = selectedMovie.watched;
 
 	const Http = new XMLHttpRequest();
-	const url = 'http://'+location.hostname+':9001/updateMovie';
+	const url = 'http://' + location.hostname + ':9001/updateMovie';
 
 	Http.open("PUT", url);
 	Http.setRequestHeader("Content-Type", "application/json");
 
-	Http.onload = function(event) {
+	Http.onload = function (event) {
 		showMovies();
-	}
+	};
 	Http.send(JSON.stringify(body));
 
 	$('#editModal').modal('hide');
+	return false;
+}
+
+function editWatchStatus(cardInfo) {
+	let body = {
+		movie_title: cardInfo.movie_title,
+		release_year: cardInfo.release_year,
+		plot: cardInfo.plot,
+		genre: cardInfo.genre,
+		cast: cardInfo.cast,
+		poster_url: cardInfo.poster_url,
+		id: cardInfo.id,
+		watched: !cardInfo.watched,
+	};
+	const Http = new XMLHttpRequest();
+	const url = 'http://' + location.hostname + ':9001/updateMovie';
+
+	Http.open("PUT", url);
+	Http.setRequestHeader("Content-Type", "application/json");
+
+	Http.send(JSON.stringify(body));
+}
+
+
+/**
+ * validator function
+ * this will validate the the fields when adding and editing.
+ * @param data
+ * @returns {string|boolean}
+ */
+function dataValidator(data) {
+	if(data.movie_title === '' || data.release_year === '' || data.plot === '' || data.genre === '' || data.cast === '' || data.poster_url === '') {
+		return 'Please complete each field';
+	}
+	if(data.movie_title.length > 30) {
+		return 'Movie title cannot be larger than 30 chars';
+	} else if (data.plot.length > 130) {
+		return 'Movie plot cannot be larger than 130 chars';
+	} else if (data.genre && data.genre.split(',').length > 6) {
+		return 'Maximum genres reached (6)';
+	} else if (data.cast && data.cast.split(',').length > 3) {
+		return 'Maximum cast members reached (3)';
+	}
 	return false;
 }

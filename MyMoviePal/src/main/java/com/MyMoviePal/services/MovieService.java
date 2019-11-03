@@ -33,6 +33,7 @@ public class MovieService {
 		foundMovie.setRelease_year(Ref.getRelease_year());
 		foundMovie.setCast(Ref.getCast());
 		foundMovie.setPoster_url(Ref.getPoster_url());
+		foundMovie.setWatched(Ref.isWatched());
 		repo.flush();
 	}
 	
